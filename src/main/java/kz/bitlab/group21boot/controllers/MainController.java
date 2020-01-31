@@ -18,7 +18,7 @@ public class MainController {
 
     @GetMapping(path = "/")
     public String index(Model model, @RequestParam(name = "key", defaultValue = "", required = false) String key){
-
+        // Hello BITLAB
         List<Items> items;
         if(key!=null&&!key.equals("")){
             items = itemRepository.findAllByName(key);
