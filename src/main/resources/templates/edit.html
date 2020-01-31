@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>Hello</title>
+    </head>
+    <body>
+        <form th:action="@{'/save'}" method="post">
+            <input type="hidden" name="id" th:value = "${tovar.id}">
+            NAME : <input type="text" name="name" th:value = "${tovar.name}">
+            PRICE : <input type="number" name="price" th:value = "${tovar.price}">
+            MAGAZIN : <input type="text" name="magazin" th:value = "${tovar.magazinnynAty}">
+            <button>SAVE ITEM</button>
+        </form>
+        <form th:action = "@{'/delete'}" method="post">
+            <input type="hidden" name="id" th:value = "${tovar.id}">
+            <button>DELETE</button>
+        </form>
+    </body>
+</html>

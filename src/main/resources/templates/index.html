@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>Hello</title>
+    </head>
+    <body>
+
+        <form th:action="@{'/add'}" method="post">
+            NAME : <input type="text" name="name">
+            PRICE : <input type="number" name="price">
+            MAGAZIN : <input type="text" name="magazin">
+            <button>ADD ITEM</button>
+        </form>
+        <br><br>
+        <form th:action = "@{'/'}" method="get">
+            TOVAR NAME : <input type="search" name="key" th:value = "${param.key}">
+            <button>SEARCH</button>
+        </form>
+        <br><br>
+        <table cellpadding="20">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        NAME
+                    </th>
+                    <th>
+                        PRICE
+                    </th>
+                    <th>
+                        MAGAZIN
+                    </th>
+                    <th>
+                        EDIT
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each = "duken:${items}">
+                    <td th:text = "${duken.id}"></td>
+                    <td th:text = "${duken.name}"></td>
+                    <td th:text = "${duken.price}"></td>
+                    <td th:text = "${duken.magazinnynAty}"></td>
+                    <td><a th:href = "@{'/edit/' + ${duken.id}}">EDIT</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
