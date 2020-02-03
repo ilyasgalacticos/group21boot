@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,16 +19,16 @@ public class MainController {
 
     @GetMapping(path = "/")
     public String index(Model model, @RequestParam(name = "key", defaultValue = "", required = false) String key){
-        // Hello BITLAB
-        List<Items> items;
-        if(key!=null&&!key.equals("")){
-            items = itemRepository.findAllByName(key);
-        }else{
-            items = itemRepository.findAll();
-        }
+        return "index";
+    }
+
+    @GetMapping(path = "/about")
+    public String about(Model model){
+
+        List<Items> items = itemRepository.findAllByDeletedAtNullOrderByIdAsc();
         model.addAttribute("items", items);
 
-        return "index";
+        return "about";
     }
 
     @PostMapping(path = "/add")
@@ -36,7 +37,7 @@ public class MainController {
                           @RequestParam(name = "price") int price,
                           @RequestParam(name = "magazin") String magazin){
 
-        itemRepository.save(new Items(null, name, price, magazin));
+        itemRepository.save(new Items(null, name, price, magazin, null));
         return "redirect:/";
     }
 
@@ -44,7 +45,7 @@ public class MainController {
     public String editItem(Model model, @PathVariable(name = "itemId") Long itemId){
 
         Optional items = itemRepository.findById(itemId);
-        model.addAttribute("tovar", items.orElse(new Items(0L, "No Item", 0, "No Magazin")));
+        model.addAttribute("tovar", itemRepository.findByIdAndDeletedAtNull(itemId));
 
         return "edit";
 
@@ -56,7 +57,7 @@ public class MainController {
                            @RequestParam(name = "magazin") String magazin,
                            @RequestParam(name = "id") Long id){
 
-        Items item = itemRepository.findById(id).orElse(null);
+        Items item = itemRepository.findByIdAndDeletedAtNull(id);
 
         if(item!=null){
             item.setName(name);
@@ -69,7 +70,11 @@ public class MainController {
 
     @PostMapping(path = "/delete")
     public String deleteItem(@RequestParam(name = "id") Long id){
-        itemRepository.deleteById(id);
+        Items item = itemRepository.findByIdAndDeletedAtNull(id);
+        if(item!=null){
+            item.setDeletedAt(new Date());
+            itemRepository.save(item);
+        }
         return "redirect:/";
     }
 
