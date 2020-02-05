@@ -1,4 +1,4 @@
-package kz.bitlab.group21boot;
+package kz.bitlab.group21boot.repositories;
 
 import kz.bitlab.group21boot.entities.Items;
 import org.springframework.data.jpa.repository.JpaRepository;
